@@ -51,3 +51,9 @@ class DailyAvailability:
 #  7/10 on user rated self efficiency metric and was completed so-and-so time before the deadline, etc.)
 #  One possibility is to have users give their choice of success metric and evaluate the probability of success for
 #  tasks based on when they do them (main issue is that we don't have a lot of data)
+
+
+
+
+
+

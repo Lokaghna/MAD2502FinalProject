@@ -1,12 +1,12 @@
-
-from data_handling import dataclass_models
 from dataclass_models import Task, EnergyEntry, AvailableBlock, DailyAvailability
-
+from typing import Dict, List
+from datetime import timedelta
 
 
 tasks: List[Task] = []
 energy_log: List[EnergyEntry] = []
 availability_log: List[DailyAvailability] = []
+energy_profile: Dict[str,float] = {}
 def add_task(task_info: Task) -> None:
     """Add a task to the user's task list:
     Parameters: task_info (Task): A Task object containing details such as task id or task name"""
@@ -20,7 +20,7 @@ def remove_task(task_index: int) -> None:
 def set_energy_log(log:List [EnergyEntry]) -> None:
     global energy_log
     energy_log = log
-def set_availability_log() -> List[EnergyEntry]:
+def set_availability_log(log:List [DailyAvailability]) -> None:
     global availability_log
     availability_log = log
 def priority_to_number(priority: int) -> int:
@@ -32,13 +32,6 @@ def set_energy_level(energy_data: Dict[str, float]) -> None:
     where higher energy indicate higher energy levels"""
     global energy_profile
     energy_profile = energy_data
-
-def set_user_availability(availability_info: Dict[str, List[TimeSlot]]) -> None:
-    """Define the user's availability for scheduling tasks
-    Parameters: availability_info (Dict[str, List[TimeSlot]]): A dictionary mapping days of the week to
-    a list of TimeSlot objects showing when the user is free"""
-    global user_availability
-    user_availability = availability_info
 
 def generate_schedule() -> Dict[str, List[AvailableBlock]]: #refer to Loki's AvailableBlock class
     schedule: Dict[str, List[AvailableBlock]] = {}
