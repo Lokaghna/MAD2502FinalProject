@@ -21,7 +21,7 @@ def remove_task(task_id: int) -> None:
 def set_availability_log(log:List [DailyAvailability]) -> None:
     global availability_log
     availability_log = log
-def priority_to_number(priority: int) -> int:
+def priority_to_number(priority: str) -> int:
     mapping = {"low" : 1, "medium" : 2, "high" : 3}
     return mapping.get(priority.lower(), 0)
 def set_energy_level(energy_data: Dict[str, float]) -> None:
@@ -80,7 +80,7 @@ def generate_schedule() -> Dict[str, List[AvailableBlock]]: #refer to Loki's Ava
                         remaining = 0
                     else:
                         schedule[task.title].append(block)
-                        remaining - block_duration
+                        remaining -= block_duration
                         del day.blocks[i]
                 else:
                     i += 1
