@@ -9,15 +9,14 @@ success = np.random.choice([0, 1], size=n_rows, p=[0.5, 0.5])
 
 data_testing = []
 for i in range(n_rows):
-    row = {
+    data_testing.append({
         "task_name": f"Task {i + 1}",
         "duration_min": int(duration_min[i]),
         "priority": int(priority[i]),
         "energy_required": int(energy_required[i]),
         "available_minutes": int(available_minutes[i]),
         "success": int(success[i])
-    }
-    data_testing.append(row)
+    })
 
 columns = ["Task_Name", "Duration", "Priority", "Energy Requirements", "Available Minutes", "Success"]
 
