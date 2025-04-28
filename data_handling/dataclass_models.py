@@ -5,6 +5,7 @@ from typing import Optional, List, Dict, Any
 
 # === Dataclass Models! ===
 
+# list of data collected for each task
 @dataclass
 class Task:
     id: str
@@ -17,6 +18,7 @@ class Task:
     success: int
     grade: float
 
+    # class method for converting to task
     @classmethod
     def from_json(cls, data: Dict[str, Any]) -> "Task":
         return cls(

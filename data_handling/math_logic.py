@@ -23,12 +23,12 @@ def fit_beta_success(tasks: List[Task]) -> np.ndarray:
     X = x.values                        # (n, 6) n rows with 6 columns of values
     y = df["success"].to_numpy(float)   # (n,) n rows of y values
 
-    # matrix multiplication to find relevant values.
+    # matrix multiplication to find relevant matrices for formulas.
     Xt = X.T
     XtX = np.matmul(Xt, X)
     Xty = np.matmul(Xt, y)
 
-    # calculate vector of coefficients for individual variables
+    # calculate vector of coefficients for individual variables when comparing predictors to success
     beta = np.matmul(np.linalg.inv(XtX), Xty)
 
     return beta
@@ -38,16 +38,18 @@ def fit_beta_grade(tasks: List[Task]) -> np.ndarray:
     """Returns a 6-element beta vector (intercept + 5 predictor betas) against grade."""
     df = pd.DataFrame([asdict(t) for t in tasks])
 
+    # get x values in matrix format
     x = df[data_predictors].astype(float)
     x.insert(0, "intercept", 1.0)  # beta 0 column
     X = x.values  # (n, 6) n rows with 6 columns of values
     y = df["grade"].to_numpy(float)
 
+    # matrix multiplication to find relevant matrices for formulas
     Xt = X.T
     XtX = np.matmul(Xt, X)
     Xty = np.matmul(Xt, y)
 
-    # calculate vector of coefficients for individual variables
+    # calculate vector of coefficients for individual variables when comparing predictors to grade
     beta = np.matmul(np.linalg.inv(XtX), Xty)
 
     return beta
