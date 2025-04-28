@@ -55,6 +55,7 @@ class SchedulerGUI(tk.Tk):
 
         self.task_table.pack(fill="both", expand=True, padx=20, pady=20)
 
+    #reference for askopenfilename: https://www.geeksforgeeks.org/python-askopenfile-function-in-tkinter/
     def load_data(self):
         filepath = filedialog.askopenfilename(filetypes=[("JSON Files", "*.json")])
         if not filepath:
