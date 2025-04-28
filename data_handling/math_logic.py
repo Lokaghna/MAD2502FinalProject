@@ -33,7 +33,9 @@ def fit_beta(tasks: List[Task]) -> np.ndarray:
 
 
 def predict_prob(beta: np.ndarray, predicted_task: Task | Dict[str, Any]) -> Tuple[float, float]:
-    """ takes input of beta vector calculated from fit_beta and a predicted task"""
+    """ takes input of beta vector calculated from fit_beta and a predicted task. Calculates logarithmic odd by finding the
+    matrix multiplication of the beta vector (which is a vector with the coefficients of the individual predictors) and
+    the x_vector which is the user input of their new information. We output a tuple of the probability and log-odd."""
     if isinstance(predicted_task, Task):
         d = asdict(predicted_task)
     else:
@@ -41,7 +43,7 @@ def predict_prob(beta: np.ndarray, predicted_task: Task | Dict[str, Any]) -> Tup
 
     x_vector = np.array([1.0] + [d[k] for k in data_predictors], dtype=float)
 
-    z = float(np.matmul(beta, x_vector))  # log-odds
+    z = float(np.matmul(beta, x_vector))  # logarithmic-odds (odds as in probability)
     p = 1.0 / (1.0 + math.exp(-z))        # sigmoid probability calculation
 
     return p, z
