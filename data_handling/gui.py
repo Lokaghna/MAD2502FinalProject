@@ -5,6 +5,7 @@ from dataclass_models import Task
 from parse_data import load_json, parse_tasks, parse_energy_log, parse_availability
 from functions_new import add_task, remove_task, generate_schedule, set_availability_log, set_energy_level, load_data
 
+# reference for gui: https://www.geeksforgeeks.org/python-gui-tkinter/
 class SchedulerGUI(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -55,7 +56,6 @@ class SchedulerGUI(tk.Tk):
         self.main_frame.pack(fill='both', expand=True)
 
     # reference for load_data: https://www.geeksforgeeks.org/python-askopenfile-function-in-tkinter/
-    #                        : https://www.geeksforgeeks.org/python-gui-tkinter/
     def load_data(self):
         filepath = filedialog.askopenfilename(filetypes=[("JSON Files", "*.json")])
         if filepath:
