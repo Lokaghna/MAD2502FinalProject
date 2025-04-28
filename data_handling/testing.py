@@ -1,6 +1,7 @@
 import numpy as np
 import json
 
+#The process of randomly generating data
 n_rows = 100
 days_until_due = np.random.randint(1, 15, size=n_rows)
 duration_min = np.random.randint(10, 120, size=n_rows)
