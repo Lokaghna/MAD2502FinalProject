@@ -1,35 +1,35 @@
-# from dataclass_models import Task, EnergyEntry, AvailableBlock, DailyAvailability
+# from dataclass_models import Task, load_tasks
 # from typing import Dict, List
-# from datetime import timedelta, datetime
-# from parse_data import load_json, parse_tasks, parse_energy_log, parse_availability
-#
-#
+# # from datetime import timedelta, datetime
+# # from parse_data import load_json, parse_tasks, parse_energy_log, parse_availability
+# #
+# #
 # tasks: List[Task] = []
-#
-#
+# #
+# #
 # def load_data(filepath: str) -> None:
 #     """
 #     Load tasks, energy log, and availability log from a JSON file into program memory.
 #     """
-#     data = load_json(filepath)
-#     task_list = parse_tasks(data)
+#     data = load_tasks(filepath)
+#     task_list: list[Task] = data
 #     # energy_entries = parse_energy_log(data)
 #     # availability = parse_availability(data)
 #
-#     global tasks, energy_log, availability_log, energy_profile
+#     global tasks
 #     tasks.clear()
 #     tasks.extend(task_list)
-#
-#     energy_log.clear()
-#     energy_log.extend(energy_entries)
-#
-#     availability_log.clear()
-#     availability_log.extend(availability)
-#
-#     energy_profile.clear()
-#     for entry in energy_entries:
-#         hour_str = entry.date.strftime("%H:00")
-#         energy_profile[hour_str] = entry.energy
+    # #
+    # # energy_log.clear()
+    # # energy_log.extend(energy_entries)
+    #
+    # availability_log.clear()
+    # availability_log.extend(availability)
+    #
+    # energy_profile.clear()
+    # for entry in energy_entries:
+    #     hour_str = entry.date.strftime("%H:00")
+    #     energy_profile[hour_str] = entry.energy
 #
 #
 # # energy_log: List[EnergyEntry] = []

@@ -1,3 +1,4 @@
+from dataclass_models import Task, load_tasks
 import numpy as np
 import json
 
@@ -21,7 +22,6 @@ for i in range(n_rows):
         "success": int(success[i])
     })
 
-data_to_save = {"tasks": tasks}
 
 # Save to JSON file
 with open("test_tasks.json", "w") as f:
