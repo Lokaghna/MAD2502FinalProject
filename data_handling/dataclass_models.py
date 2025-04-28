@@ -35,7 +35,7 @@ class Task:
             "duration_in_minutes": self.duration_in_minutes,
             "priority_level": self.priority_level,
             "energy_required": self.energy_required,
-            "available_time+minutes": self.available_time_minutes,
+            "available_time_minutes": self.available_time_minutes,
             "success": self.success
         }
 

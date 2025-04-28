@@ -1,9 +1,10 @@
 import tkinter as tk
-from tkinter import ttk, filedialog, messagebox
+from tkinter import ttk, filedialog, messagebox, simpledialog
 import matplotlib.pyplot as plt
 import numpy as np
 from testing import *
 from helper_functions import load_data, tasks, analyze_feature_vs_success
+from math_logic import fit_beta, predict_prob
 
 
 # reference for gui: https://www.geeksforgeeks.org/python-gui-tkinter/
@@ -32,11 +33,17 @@ class SchedulerGUI(tk.Tk):
         btn_panel = tk.Frame(self, bg="#ad87f8")
         btn_panel.pack(pady=10)
 
+        # Load Data Button
         self.load_data_btn = ttk.Button(btn_panel, text="Load Data", command=self.load_data, width=20)
         self.load_data_btn.pack(side=tk.LEFT, padx=10)
 
+        # Analyze Data Button
         self.analyze_btn = ttk.Button(btn_panel, text="Analyze Data", command=self.analyze_data, width=20)
         self.analyze_btn.pack(side=tk.LEFT, padx=10)
+
+        # Probability Button
+        self.probability_btn = ttk.Button(btn_panel, text="Calculate Success", command=self.calculate_prob, width=20)
+        self.probability_btn.pack(side=tk.LEFT, padx=10)
 
         # Task Table
         columns = ("Task #", "Days Til Due", "Duration", "Priority", "Energy Required", "Available Time", "Success")
@@ -94,6 +101,26 @@ class SchedulerGUI(tk.Tk):
 
         # Only call plt.show() ONCE at the end so all plots pop up together
         plt.show()
+
+        # https://docs.python.org/3/library/dialog.html
+        # tkinter user input stuff using simpledialog
+    def calculate_prob(self):
+        self.beta = fit_beta(tasks)
+        try:
+            vals = {
+                "days_until_due": int(simpledialog.askinteger("Input", "How many days until due?")),
+                "duration_in_minutes": int(simpledialog.askinteger("Input", "How long do you expect it to take (in minutes)?")),
+                "priority_level": int(simpledialog.askinteger("Input", "What is the task's priority level (from 1-10)?")),
+                "energy_required": int(simpledialog.askinteger("Input", "What is the expected energy requirement (from 1-10)?")),
+                "available_time_minutes": int(simpledialog.askinteger("Input", "How much time do you have available today (in minutes)?"))
+            }
+        except ValueError:
+            ValueError("Bad input, invalid integer")
+            return
+
+        prob, z = predict_prob(self.beta, vals)
+
+        messagebox.showinfo("Success Probability: ", f"{prob*100:.3f}%")
 
 if __name__ == "__main__":
     app = SchedulerGUI()

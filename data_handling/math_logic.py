@@ -39,7 +39,7 @@ def predict_prob(beta: np.ndarray, predicted_task: Task | Dict[str, Any]) -> Tup
     else:
         d = predicted_task
 
-    x_vector = np.array([1.0] + [d[k] for k in data_predictors], float)
+    x_vector = np.array([1.0] + [d[k] for k in data_predictors], dtype=float)
 
     z = float(np.matmul(beta, x_vector))  # log-odds
     p = 1.0 / (1.0 + math.exp(-z))        # sigmoid probability calculation
