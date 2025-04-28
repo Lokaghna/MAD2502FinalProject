@@ -1,4 +1,3 @@
-from dataclass_models import Task, load_tasks
 import numpy as np
 import json
 
@@ -23,7 +22,6 @@ for i in range(n_rows):
         "grade": int(grade[i]),
         "success": 1 if(grade[i] >= 70) else 0
     })
-
 
 # Save to JSON file
 with open("test_tasks.json", "w") as f:

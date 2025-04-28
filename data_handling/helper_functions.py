@@ -6,7 +6,7 @@ tasks: List[Task] = []
 
 def load_data(filepath: str) -> None:
     """
-    Load tasks, energy log, and availability log from a JSON file into program memory.
+    loads tasks, energy log, and availability log from a JSON file into program memory
     """
     data = load_tasks(filepath)
     task_list: list[Task] = data
@@ -19,7 +19,7 @@ def load_data(filepath: str) -> None:
 
 def analyze_feature_vs_grade(tasks: List[Task], feature_name: str) -> tuple[np.ndarray, np.ndarray]:
     """
-    Analyze a selected feature vs success.
+    analyze a selected feature vs success
     """
     # map features to task attribute names
     feature_mapping = {
@@ -35,6 +35,7 @@ def analyze_feature_vs_grade(tasks: List[Task], feature_name: str) -> tuple[np.n
 
     x_attr = feature_mapping[feature_name]
 
+    # extracts x and y values for selected feature against grades
     x_values = np.array([getattr(task, x_attr) for task in tasks])
     y_values = np.array([task.grade for task in tasks])
 
