@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
-import json
 import matplotlib.pyplot as plt
 import numpy as np
-from dataclass_models import Task, load_tasks
-#from functions_new import load_data, tasks
+from testing import *
+from helper_functions import load_data, tasks, analyze_feature_vs_success
+
 
 # reference for gui: https://www.geeksforgeeks.org/python-gui-tkinter/
 class SchedulerGUI(tk.Tk):
@@ -52,44 +52,47 @@ class SchedulerGUI(tk.Tk):
         filepath = filedialog.askopenfilename(filetypes=[("JSON Files", "*.json")])
         if not filepath:
             return
-        with open(filepath, "r") as f:
-            data = json.load(f)
+
+        load_data(filepath)
 
         self.data_matrix.clear()
         self.task_table.delete(*self.task_table.get_children())
 
-        for task in data.get("tasks", []):
+        for task in tasks:
             row = [
-                int(task["task_id"]),
-                int(task["days_until_due"]),
-                int(task["duration_in_minutes"]),
-                int(task["priority_level"]),
-                int(task["energy_required"]),
-                int(task["available_time_minutes"]),
-                int(task["success"])
+                int(task.id),
+                int(task.days_until_due),
+                int(task.duration_in_minutes),
+                int(task.priority_level),
+                int(task.energy_required),
+                int(task.available_time_minutes),
+                int(task.success)
             ]
             self.data_matrix.append(row)
 
-            # Insert into Treeview
             self.task_table.insert("", tk.END, values=row)
-
 
     def analyze_data(self):
         if not self.data_matrix:
             messagebox.showerror("Error", "No data to analyze.")
             return
 
-        data = np.array(self.data_matrix)
+        # List of all features to plot
+        feature_list = ["Priority Level", "Energy Required", "Available Time", "Days Until Due", "Duration"]
 
-        priorities = data[:, 2]
-        successes = data[:, 5]
+        for feature_name in feature_list:
+            x_values, y_values = analyze_feature_vs_success(tasks, feature_name)
 
-        plt.figure()
-        plt.scatter(priorities, successes)
-        plt.xlabel("Priority (1-10)")
-        plt.ylabel("Success (0=No, 1=Yes)")
-        plt.title("Priority vs Success")
-        plt.grid(True)
+            plt.figure(figsize=(8, 5))
+            plt.scatter(x_values, y_values, s=50, alpha=0.7, edgecolors='k')
+            plt.xlabel(feature_name, fontsize=12)
+            plt.ylabel("Success (0=No, 1=Yes)", fontsize=12)
+            plt.title(f"{feature_name} vs Success", fontsize=14)
+            plt.ylim(-0.1, 1.1)
+            plt.yticks([0, 1])
+            plt.grid(True)
+
+        # Only call plt.show() ONCE at the end so all plots pop up together
         plt.show()
 
 if __name__ == "__main__":

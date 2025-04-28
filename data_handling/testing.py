@@ -2,12 +2,12 @@ from dataclass_models import Task, load_tasks
 import numpy as np
 import json
 
-n_rows = 10
+n_rows = 100
 days_until_due = np.random.randint(1, 15, size=n_rows)
-duration_min = np.random.randint(10, 180, size=n_rows)
+duration_min = np.random.randint(10, 120, size=n_rows)
 priority = np.random.randint(1, 11, size=n_rows)
 energy_required = np.random.randint(1, 11, size=n_rows)
-available_minutes = np.random.randint(30, 600, size=n_rows)
+available_minutes = np.random.randint(100, 360, size=n_rows)
 success = np.random.choice([0, 1], size=n_rows, p=[0.5, 0.5])
 
 data_testing = []
@@ -25,4 +25,4 @@ for i in range(n_rows):
 
 # Save to JSON file
 with open("test_tasks.json", "w") as f:
-    json.dump(data_to_save, f, indent=4)
+    json.dump(data_testing, f, indent=4)

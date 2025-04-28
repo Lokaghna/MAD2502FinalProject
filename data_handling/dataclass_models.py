@@ -25,7 +25,7 @@ class Task:
             priority_level=data["priority_level"],
             energy_required=data["energy_required"],
             available_time_minutes=data["available_time_minutes"],
-            success=data["success_metric"]
+            success=data["success"]
         )
 
     def to_dict(self) -> Dict[str, Any]:
