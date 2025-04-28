@@ -28,7 +28,7 @@ class SchedulerGUI(tk.Tk):
 
     def _build_main_ui(self):
         # Header Label
-        header = ttk.Label(self, text="Smart Study Scheduler", style='Header.TLabel')
+        header = ttk.Label(self, text="Smart Daily Planner", style='Header.TLabel')
         header.pack(pady=20)
 
         # Button panel
@@ -48,7 +48,7 @@ class SchedulerGUI(tk.Tk):
         self.probability_btn.pack(side=tk.LEFT, padx=10)
 
         # Task Table
-        columns = ("Task #", "Days Til Due", "Duration", "Priority", "Energy Required", "Available Time", "Success")
+        columns = ("Task #", "Days Til Due", "Duration", "Priority", "Energy Required", "Available Time", "Grade")
         self.task_table = ttk.Treeview(self, columns=columns, show="headings", height=15)
 
         for col in columns:
@@ -76,7 +76,7 @@ class SchedulerGUI(tk.Tk):
                 int(task.priority_level),
                 int(task.energy_required),
                 int(task.available_time_minutes),
-                int(task.success)
+                int(task.grade)
             ]
             self.data_matrix.append(row)
 
