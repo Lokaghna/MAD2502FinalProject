@@ -47,6 +47,8 @@ def get_average_energy(block: AvailableBlock) -> float:
             total_duration += time_in_hour
         current = next_hour
     return total_energy / total_duration if total_duration > 0 else 0.0
+
+
 def generate_schedule() -> Dict[str, List[AvailableBlock]]: #refer to Loki's AvailableBlock class
     schedule: Dict[str, List[AvailableBlock]] = {}
     sorted_task = sorted(tasks, key=lambda t: (t.due_date if t.due_date else datetime.max, -priority_to_number(t.priority)))
