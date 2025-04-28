@@ -26,7 +26,7 @@ class SchedulerGUI(tk.Tk):
 
     def _build_main_ui(self):
         # Header Label
-        header = ttk.Label(self, text="Smart Study Scheduler", style='Header.TLabel')
+        header = ttk.Label(self, text="Smart Daily Planner", style='Header.TLabel')
         header.pack(pady=20)
 
         # Button panel
