@@ -9,17 +9,26 @@ success = np.random.choice([0, 1], size=n_rows, p=[0.5, 0.5])
 
 data_testing = []
 for i in range(n_rows):
-    row = [
-        f"Task {i+1}",
-        int(duration_min[i]),
-        int(priority[i]),
-        int(energy_required[i]),
-        int(available_minutes[i]),
-        int(success[i]),
-    ]
+    row = {
+        "task_name": f"Task {i + 1}",
+        "duration_min": int(duration_min[i]),
+        "priority": int(priority[i]),
+        "energy_required": int(energy_required[i]),
+        "available_minutes": int(available_minutes[i]),
+        "success": int(success[i])
+    }
     data_testing.append(row)
 
 columns = ["Task_Name", "Duration", "Priority", "Energy Requirements", "Available Minutes", "Success"]
+
+key_mapping = {
+    "Task_Name": "task_name",
+    "Duration": "duration_min",
+    "Priority": "priority",
+    "Energy Requirements": "energy_required",
+    "Available Minutes": "available_minutes",
+    "Success": "success"
+}
 print("\t".join(columns))
 for row in data_testing:
-    print("\t".join(str(x) for x in row))
+    print("\t".join(str(row[key_mapping[col]]) for col in columns))
