@@ -1,75 +1,96 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import json
+import matplotlib.pyplot as plt
+import numpy as np
 from dataclass_models import Task
-from parse_data import load_json, parse_tasks, parse_energy_log, parse_availability
-from functions_new import add_task, remove_task, generate_schedule, set_availability_log, set_energy_level, load_data
+from functions_new import load_data, tasks
 
 # reference for gui: https://www.geeksforgeeks.org/python-gui-tkinter/
 class SchedulerGUI(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Smart Study Scheduler")
-        self.geometry("900x650")
+        self.geometry("800x600")
         self.configure(bg="#ad87f8")
         self._init_styles()
-        self._build_splash()
+        self.data_matrix = []
         self._build_main_ui()
-        self.show_splash()
 
     def _init_styles(self):
         style = ttk.Style(self)
         style.theme_use('clam')
         style.configure('TButton', font=('Times New Roman', 14), padding=10)
-        style.configure('Header.TLabel', font=('Times New Roman', 28, 'bold'), foreground='#333')
-        style.configure('Treeview.Heading', font=('Times New Roman', 12, 'bold'))
-
-    def _build_splash(self):
-        self.splash_frame = tk.Frame(self, bg="#ad87f8")
-        title = ttk.Label(self.splash_frame, text="Smart Study Scheduler", style='Header.TLabel')
-        title.pack(pady=(100, 20))
-        start_btn = ttk.Button(self.splash_frame, text="Start", command=self.show_main_ui)
-        start_btn.pack(pady=10)
+        style.configure('Header.TLabel', font=('Times New Roman', 24, 'bold'), foreground='#333')
 
     def _build_main_ui(self):
-        self.main_frame = tk.Frame(self, bg="#ad87f8")
-        # Header
-        header = ttk.Label(self.main_frame, text="Smart Study Scheduler", style='Header.TLabel')
-        header.pack(pady=(20, 10))
+        # Header Label
+        header = ttk.Label(self, text="Smart Study Scheduler", style='Header.TLabel')
+        header.pack(pady=20)
+
         # Button panel
-        btn_panel = tk.Frame(self.main_frame, bg="#ad87f8")
-        btn_panel.pack(pady=15)
-        self.load_data_btn = ttk.Button(btn_panel, text="Load Data", command=self.load_data, width=15)
-        self.add_task_btn = ttk.Button(btn_panel, text="Add Task", command=self.add_task, width=15)
-        self.remove_task_btn = ttk.Button(btn_panel, text="Remove Task", command=self.remove_task, width=15)
-        self.generate_btn = ttk.Button(btn_panel, text="Generate Schedule", command=self.generate_schedule, width=18)
-        for btn in [self.load_data_btn, self.add_task_btn, self.remove_task_btn, self.generate_btn]:
-            btn.pack(side=tk.LEFT, padx=10)
+        btn_panel = tk.Frame(self, bg="#ad87f8")
+        btn_panel.pack(pady=10)
 
+        self.load_data_btn = ttk.Button(btn_panel, text="Load Data", command=self.load_data, width=20)
+        self.load_data_btn.pack(side=tk.LEFT, padx=10)
 
-    def show_splash(self):
-        self.main_frame.pack_forget()
-        self.splash_frame.pack(fill='both', expand=True)
+        self.analyze_btn = ttk.Button(btn_panel, text="Analyze Data", command=self.analyze_data, width=20)
+        self.analyze_btn.pack(side=tk.LEFT, padx=10)
 
-    def show_main_ui(self):
-        self.splash_frame.pack_forget()
-        self.main_frame.pack(fill='both', expand=True)
+        # Task Table
+        columns = ("Task #", "Days Til Due", "Duration", "Priority", "Energy Required", "Available Time", "Success")
+        self.task_table = ttk.Treeview(self, columns=columns, show="headings", height=15)
 
-    # reference for load_data: https://www.geeksforgeeks.org/python-askopenfile-function-in-tkinter/
+        for col in columns:
+            self.task_table.heading(col, text=col)
+            self.task_table.column(col, anchor='center', width=100)
+
+        self.task_table.pack(fill="both", expand=True, padx=20, pady=20)
+
     def load_data(self):
         filepath = filedialog.askopenfilename(filetypes=[("JSON Files", "*.json")])
-        if filepath:
-            load_data(filepath)
-            self.refresh_tasks_tree()
+        if not filepath:
+            return
+        with open(filepath, "r") as f:
+            data = json.load(f)
 
-    def add_task(self):
-        pass
+        self.data_matrix.clear()
+        self.task_table.delete(*self.task_table.get_children())
 
-    def remove_task(self):
-        pass
+        for task in data.get("tasks", []):
+            row = [
+                int(task["task_id"]),
+                int(task["days_until_due"]),
+                int(task["duration_in_minutes"]),
+                int(task["priority_level"]),
+                int(task["energy_required"]),
+                int(task["available_time_minutes"]),
+                int(task["success"])
+            ]
+            self.data_matrix.append(row)
 
-    def generate_schedule(self):
-        pass
+            # Insert into Treeview
+            self.task_table.insert("", tk.END, values=row)
+
+
+    def analyze_data(self):
+        if not self.data_matrix:
+            messagebox.showerror("Error", "No data to analyze.")
+            return
+
+        data = np.array(self.data_matrix)
+
+        priorities = data[:, 2]
+        successes = data[:, 5]
+
+        plt.figure()
+        plt.scatter(priorities, successes)
+        plt.xlabel("Priority (1-10)")
+        plt.ylabel("Success (0=No, 1=Yes)")
+        plt.title("Priority vs Success")
+        plt.grid(True)
+        plt.show()
 
 if __name__ == "__main__":
     app = SchedulerGUI()
