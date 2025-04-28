@@ -121,7 +121,7 @@ class SchedulerGUI(tk.Tk):
 
         prob, z = predict_prob(self.beta, vals)
 
-        messagebox.showinfo("Success Probability: ", f"{prob*100:.3f}%")
+        messagebox.showinfo("Success Probability: ", f"You have a success probability of {prob*100:.3f}%!")
 
 if __name__ == "__main__":
     app = SchedulerGUI()
