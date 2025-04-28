@@ -3,7 +3,7 @@ from tkinter import ttk, filedialog, messagebox
 import json
 from dataclass_models import Task
 from parse_data import load_json, parse_tasks, parse_energy_log, parse_availability
-from functions_new import add_task, remove_task, generate_schedule, set_availability_log, set_energy_level
+from functions_new import add_task, remove_task, generate_schedule, set_availability_log, set_energy_level, load_data
 
 class SchedulerGUI(tk.Tk):
     def __init__(self):
@@ -44,13 +44,7 @@ class SchedulerGUI(tk.Tk):
         self.generate_btn = ttk.Button(btn_panel, text="Generate Schedule", command=self.generate_schedule, width=18)
         for btn in [self.load_data_btn, self.add_task_btn, self.remove_task_btn, self.generate_btn]:
             btn.pack(side=tk.LEFT, padx=10)
-        # Task list
-        columns = ("Title", "Duration", "Due Date")
-        self.tasks_tree = ttk.Treeview(self.main_frame, columns=columns, show="headings", height=15)
-        for col in columns:
-            self.tasks_tree.heading(col, text=col)
-            self.tasks_tree.column(col, anchor='center')
-        self.tasks_tree.pack(fill="both", expand=True, padx=20, pady=(0, 20))
+
 
     def show_splash(self):
         self.main_frame.pack_forget()
@@ -60,23 +54,13 @@ class SchedulerGUI(tk.Tk):
         self.splash_frame.pack_forget()
         self.main_frame.pack(fill='both', expand=True)
 
+    # reference for load_data: https://www.geeksforgeeks.org/python-askopenfile-function-in-tkinter/
+    #                        : https://www.geeksforgeeks.org/python-gui-tkinter/
     def load_data(self):
-        """filepath = filedialog.askopenfilename(filetypes=[("JSON Files", "*.json")])
-        if not filepath:
-            return
-        data = load_json(filepath)
-        tasks = parse_tasks(data)
-        energy_entries = parse_energy_log(data)
-        availability = parse_availability(data)
-        energy_profile = {entry.date.strftime("%H:00"): entry.energy for entry in energy_entries}
-        set_energy_level(energy_profile)
-        set_availability_log(availability)
-        self.tasks_tree.delete(*self.tasks_tree.get_children())
-        for task in tasks:
-            add_task(task)
-            due = task.due_date.strftime("%Y-%m-%d") if task.due_date else ""
-            self.tasks_tree.insert("", tk.END, iid=task.id, values=(task.title, task.duration, due))
-        """
+        filepath = filedialog.askopenfilename(filetypes=[("JSON Files", "*.json")])
+        if filepath:
+            load_data(filepath)
+            self.refresh_tasks_tree()
 
     def add_task(self):
         pass
