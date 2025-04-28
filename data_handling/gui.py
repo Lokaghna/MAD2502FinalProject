@@ -3,7 +3,7 @@ from tkinter import ttk, filedialog, messagebox, simpledialog
 import matplotlib.pyplot as plt
 import numpy as np
 from testing import *
-from helper_functions import load_data, tasks, analyze_feature_vs_success
+from helper_functions import load_data, tasks, analyze_feature_vs_grade
 from math_logic import fit_beta, predict_prob
 
 
@@ -89,15 +89,15 @@ class SchedulerGUI(tk.Tk):
         feature_list = ["Priority Level", "Energy Required", "Available Time", "Days Until Due", "Duration"]
 
         for feature_name in feature_list:
-            x_values, y_values = analyze_feature_vs_success(tasks, feature_name)
+            x_values, y_values = analyze_feature_vs_grade(tasks, feature_name)
 
             plt.figure(figsize=(8, 5))
             plt.scatter(x_values, y_values, s=50, alpha=0.7, edgecolors='k')
             plt.xlabel(feature_name, fontsize=12)
-            plt.ylabel("Success (0=No, 1=Yes)", fontsize=12)
-            plt.title(f"{feature_name} vs Success", fontsize=14)
-            plt.ylim(-0.1, 1.1)
-            plt.yticks([0, 1])
+            plt.ylabel("Grade (In Percent)", fontsize=12)
+            plt.title(f"{feature_name} vs Grade", fontsize=14)
+            plt.ylim(0, 100)
+            plt.yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
             plt.grid(True)
 
         # Only call plt.show() ONCE at the end so all plots pop up together

@@ -17,10 +17,11 @@ def load_data(filepath: str) -> None:
     tasks.clear()
     tasks.extend(task_list)
 
-def analyze_feature_vs_success(tasks: List[Task], feature_name: str) -> tuple[np.ndarray, np.ndarray]:
+def analyze_feature_vs_grade(tasks: List[Task], feature_name: str) -> tuple[np.ndarray, np.ndarray]:
     """
     Analyze a selected feature vs success.
     """
+    # map features to task attribute names
     feature_mapping = {
         "Priority Level": "priority_level",
         "Energy Required": "energy_required",
@@ -28,13 +29,13 @@ def analyze_feature_vs_success(tasks: List[Task], feature_name: str) -> tuple[np
         "Days Until Due": "days_until_due",
         "Duration": "duration_in_minutes"
     }
-
+    # check is feature is valid
     if feature_name not in feature_mapping:
         raise ValueError(f"Unknown feature: {feature_name}")
 
     x_attr = feature_mapping[feature_name]
 
     x_values = np.array([getattr(task, x_attr) for task in tasks])
-    y_values = np.array([task.success for task in tasks])
+    y_values = np.array([task.grade for task in tasks])
 
     return x_values, y_values
