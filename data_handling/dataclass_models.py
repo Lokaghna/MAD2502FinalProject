@@ -15,6 +15,7 @@ class Task:
     energy_required: int
     available_time_minutes: int
     success: int
+    grade: float
 
     @classmethod
     def from_json(cls, data: Dict[str, Any]) -> "Task":
@@ -25,6 +26,7 @@ class Task:
             priority_level=data["priority_level"],
             energy_required=data["energy_required"],
             available_time_minutes=data["available_time_minutes"],
+            grade=data["grade"],
             success=data["success"]
         )
 
@@ -36,6 +38,7 @@ class Task:
             "priority_level": self.priority_level,
             "energy_required": self.energy_required,
             "available_time_minutes": self.available_time_minutes,
+            "grade": self.grade,
             "success": self.success
         }
 

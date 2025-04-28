@@ -19,7 +19,7 @@ def load_data(filepath: str) -> None:
 
 def analyze_feature_vs_success(tasks: List[Task], feature_name: str) -> tuple[np.ndarray, np.ndarray]:
     """
-    Analyze a selected feature vs success
+    Analyze a selected feature vs success.
     """
     feature_mapping = {
         "Priority Level": "priority_level",

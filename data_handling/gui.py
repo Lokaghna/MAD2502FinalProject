@@ -11,7 +11,7 @@ from math_logic import fit_beta, predict_prob
 class SchedulerGUI(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Smart Study Scheduler")
+        self.title("Smart Daily Planner")
         self.geometry("800x600")
         self.configure(bg="#ad87f8")
         self._init_styles()

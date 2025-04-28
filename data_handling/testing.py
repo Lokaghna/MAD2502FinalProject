@@ -8,7 +8,8 @@ duration_min = np.random.randint(10, 120, size=n_rows)
 priority = np.random.randint(1, 11, size=n_rows)
 energy_required = np.random.randint(1, 11, size=n_rows)
 available_minutes = np.random.randint(100, 360, size=n_rows)
-success = np.random.choice([0, 1], size=n_rows, p=[0.5, 0.5])
+success = np.random.choice([0,0], size=n_rows)
+grade = np.random.randint(1,  100, size=n_rows)
 
 data_testing = []
 for i in range(n_rows):
@@ -19,7 +20,8 @@ for i in range(n_rows):
         "priority_level": int(priority[i]),
         "energy_required": int(energy_required[i]),
         "available_time_minutes": int(available_minutes[i]),
-        "success": int(success[i])
+        "grade": int(grade[i]),
+        "success": 1 if(grade[i] >= 70) else 0
     })
 
 
