@@ -2,9 +2,11 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox, simpledialog
 import matplotlib.pyplot as plt
 import numpy as np
+
+from data_handling.math_logic import fit_beta_grade, fit_beta_success
 from testing import *
 from helper_functions import load_data, tasks, analyze_feature_vs_grade
-from math_logic import fit_beta, predict_prob
+from math_logic import fit_beta_success,fit_beta_grade, predict_prob
 
 
 # reference for gui: https://www.geeksforgeeks.org/python-gui-tkinter/
@@ -46,7 +48,7 @@ class SchedulerGUI(tk.Tk):
         self.probability_btn.pack(side=tk.LEFT, padx=10)
 
         # Task Table
-        columns = ("Task #", "Days Til Due", "Duration", "Priority", "Energy Required", "Available Time", "Success")
+        columns = ("Task #", "Days Til Due", "Duration", "Priority", "Energy Required", "Available Time", "Grade")
         self.task_table = ttk.Treeview(self, columns=columns, show="headings", height=15)
 
         for col in columns:
@@ -74,7 +76,7 @@ class SchedulerGUI(tk.Tk):
                 int(task.priority_level),
                 int(task.energy_required),
                 int(task.available_time_minutes),
-                int(task.success)
+                int(task.grade)
             ]
             self.data_matrix.append(row)
 
@@ -106,7 +108,8 @@ class SchedulerGUI(tk.Tk):
         # https://docs.python.org/3/library/dialog.html
         # tkinter user input stuff using simpledialog
     def calculate_prob(self):
-        self.beta = fit_beta(tasks)
+        self.beta_success = fit_beta_success(tasks)
+        self.beta_grade = fit_beta_grade(tasks)
         try:
             vals = {
                 "days_until_due": int(simpledialog.askinteger("Input", "How many days until due?")),
@@ -119,9 +122,9 @@ class SchedulerGUI(tk.Tk):
             ValueError("Bad input, invalid integer")
             return
 
-        prob, z = predict_prob(self.beta, vals)
+        prob, z, grade = predict_prob(self.beta_success,self.beta_grade, vals)
 
-        messagebox.showinfo("Success Probability: ", f"You have a success probability of {prob*100:.3f}%!")
+        messagebox.showinfo("Outcome: ", f"You have a success probability of {prob*100:.3f}%! and expected grade of {grade:.3f}.")
 
 if __name__ == "__main__":
     app = SchedulerGUI()
