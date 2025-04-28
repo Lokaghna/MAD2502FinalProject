@@ -3,8 +3,8 @@ from tkinter import ttk, filedialog, messagebox
 import json
 import matplotlib.pyplot as plt
 import numpy as np
-from dataclass_models import Task
-from functions_new import load_data, tasks
+from dataclass_models import Task, load_tasks
+#from functions_new import load_data, tasks
 
 # reference for gui: https://www.geeksforgeeks.org/python-gui-tkinter/
 class SchedulerGUI(tk.Tk):
